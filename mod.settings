@@ -1,0 +1,12 @@
+name        = "Mineshaft2"
+source_dir  = "source"
+output_dir  = "output"
+description = [=[Mineshaft2 is based on the ENSL variation of the popular Natural Selection map ns_mineshaft.
+
+Credit goes to Unknown Worlds Entertainment, the map designer, IAN, and the ENSL.
+
+28DD1471]=]
+image       = "preview.jpg"
+tag_modtype = "Map"
+tag_support = ""
+publish_id = "28dd1471"

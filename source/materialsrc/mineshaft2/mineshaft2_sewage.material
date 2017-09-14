@@ -1,0 +1,8 @@
+shader 				= "shaders/water_refract.surface_shader"
+normalMap 			= "materials/mineshaft2/mineshaft2_sewage.dds"
+speed1 				= 0.012
+speed2 				= 0.04
+scale1 				= 0.006
+scale2 				= 0.008
+transmissionColor 	= [0.32, 0.21, 0.00]
+surface 			= "water"

@@ -1,0 +1,4 @@
+shader 			= "models/hologram.surface_shader"
+emissiveMap 	= "materials/mineshaft2/mineshaft2_lockglitch.dds"
+flickerMap  	= "models/flicker.dds"
+flickerSpeed 	= 0.2
