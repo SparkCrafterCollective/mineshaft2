@@ -1,0 +1,59 @@
+<shader>
+	
+	<inputs>
+		<input name="emissiveMap" type="texture" address="wrap" srgb="true"/>
+		<input name="flickerMap" type="texture" address="wrap" srgb="false"/>
+		<input name="xScroll" type="float">0</input>
+		<input name="yScroll" type="float">0</input>
+		<input name="flickerSpeed" type="float">0</input>
+		<input name="glitchSpeed" type="float">2</input>
+	</inputs>
+	
+	<code>
+	<![CDATA[
+	
+		float AMPLITUDE = 0.1;
+		float4 float4pow( in float4 v, in float p ) {
+			// Don't touch alpha (w), we use it to choose the direction of the shift
+			// and we don't want it to go in one direction more often than the other
+			return float4(pow(v.x,p),pow(v.y,p),pow(v.z,p),v.w); 
+		}
+
+		float4 rgbShift( in float2 p , in float4 shift) {
+			shift *= 2.0*shift.a - 1.0;
+			float2 rs = float2(shift.r,-shift.g);
+			float2 gs = float2(shift.g,-shift.b);
+			float2 bs = float2(shift.b,-shift.r);
+			
+			float r = tex2D(emissiveMap, p+rs).r;
+			float g = tex2D(emissiveMap, p+gs).g;
+			float b = tex2D(emissiveMap, p+bs).b;
+			
+			return float4(r,g,b,1.0);
+		}
+
+		float4 noise( in float2 p ) {
+			return tex2D(emissiveMap, p);
+		}
+		
+		void MaterialShader(in Material_Input input, inout Material material)
+		{
+			float2 screenCenter = float2(1.0, 1.0);
+			float2 p = input.texCoord.xy / screenCenter.xy;
+			float4 c = float4(0.0,0.0,0.0,1.0);
+			
+			// Elevating shift values to some high power (between 8 and 16 looks good)
+			// helps make the stuttering look more sudden
+			float4 shift = float4pow(noise(float2(glitchSpeed*time,2.0*glitchSpeed*time/25.0)),8.0)*float4(AMPLITUDE,AMPLITUDE,AMPLITUDE,1.0);
+			
+			c += rgbShift(p, shift);
+			
+			float flicker = tex2D(flickerMap, float2(time * flickerSpeed, 0)).r;
+			float4 tex = tex2D(emissiveMap, input.texCoord + time * float2(xScroll, yScroll));
+			material.emissive = tex.rgb * input.color.rgb * c;
+			material.opacity  = tex.a * input.color.a * flicker;
+		}
+	]]>
+	</code>
+
+</shader>
