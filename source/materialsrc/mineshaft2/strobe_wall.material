@@ -1,0 +1,6 @@
+shader 			= "shaders/wall_test.surface_shader"
+albedoMap		= "shaders/wall.dds"
+emissiveMap 	= "shaders/emissive.dds"
+normalMap 		= "materials/dev/black.dds"
+specularMap 	= "materials/dev/black.dds"
+scrollingMask	= "shaders/mask.dds"
